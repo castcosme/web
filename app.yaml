@@ -1,0 +1,73 @@
+# adsoft wype-api
+
+runtime: python27
+threadsafe: true
+api_version: 1
+
+handlers:
+# Endpoints handler
+- url: /_ah/spi/.*
+  script: web_token_api.application
+  secure: always
+
+#- url: /favicon\.ico
+#  static_files: favicon.ico
+#  upload: favicon\.ico
+
+- url: /app
+  static_dir: app
+
+- url: /css
+  static_dir: css
+
+- url: /fonts
+  static_dir: fonts
+
+- url: /images
+  static_dir: images  
+
+- url: /js
+  static_dir: js
+
+- url: /vendor
+  static_dir: vendor
+
+- url: /assets/img/backgrounds
+  static_dir: assets/img/backgrounds
+
+- url: /assets/bootstrap/
+  static_dir: assets/bootstrap
+
+- url: /assets/bootstrap/css
+  static_dir: assets/bootstrap/css
+
+- url: /assets/css/
+  static_dir: assets/css
+
+- url: /assets/font-awesome/
+  static_dir: assets/font-awesome
+
+- url: /assets/ico/
+  static_dir: assets/ico
+
+- url: /assets/js/
+  static_dir: assets/js
+
+- url: /assets/fonts/
+  static_dir: assets/fonts
+
+
+- url: .*
+  script: public_rest_api.app
+
+libraries:
+- name: pycrypto
+  version: latest
+- name: endpoints
+  version: 1.0
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: latest
+- name: markupsafe
+  version: latest
