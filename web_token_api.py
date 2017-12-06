@@ -545,6 +545,365 @@ class AlimentoApi(remote.Service):
    message = CodeMessage(code=-1, message='Token expired')
   return message
 
+  ###########################
+#### Fruta
+###########################
 
-application = endpoints.api_server([UsuariosApi, EmpresasApi, AlimentoApi, ProductsApi], restricted=False)
+@endpoints.api(name='fruta_api', version='v1', description='fruta REST API')
+class FrutaApi(remote.Service):
+# get one
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(TokenKey, FrutaList, path='fruta/get', http_method='POST', name='fruta.get')
+#siempre lleva cls y request
+ def fruta_get(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+      #Obtiene el elemento dado el entityKey
+   frutaentity = ndb.Key(urlsafe=request.entityKey)
+      #CREA LA SALIDA de tipo JosueInput y le asigna los valores, es a como se declaro en el messages.py
+      #josuentity.get().empresa_key.urlsafe() para poder optener el EntityKey
+   message = FrutaList(code=1, data=[FrutaUpdate(token='Succesfully get',
+    entityKey=frutaentity.get().entityKey,
+    #empresa_key=teamentity.get().empresa_key.urlsafe(), 
+    title=frutaentity.get().title, 
+    description=frutaentity.get().description, 
+    urlImage=frutaentity.get().urlImage)])
+  except jwt.DecodeError:
+   message = FrutaList(code=-1, data=[])
+  except jwt.ExpiredSignatureError:
+   message = FrutaList(code=-2, data=[])
+  return message
+
+
+# delete
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(TokenKey, CodeMessage, path='fruta/delete', http_method='POST', name='fruta.delete')
+#siempre lleva cls y request
+ def fruta_remove(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+   frutaentity = ndb.Key(urlsafe=request.entityKey)#Obtiene el elemento dado el EntitKey
+   frutaentity.delete()#BORRA
+   message = CodeMessage(code=0, message='fruta deleted')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+# list
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(Token, FrutaList, path='fruta/list', http_method='POST', name='fruta.list')
+#siempre lleva cls y request
+ def fruta_list(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id']) #obtiene usuario dado el token
+   lista = [] #crea lista para guardar contenido de la BD
+   lstMessage = FrutaList(code=1) #CREA el mensaje de salida
+   lstBd = Fruta.query().fetch() #obtiene de la base de datos
+   for i in lstBd: #recorre la base de datos
+    #inserta a la lista creada con los elementos que se necesiten de la base de datos
+    #i.empresa_key.urlsafe() obtiene el entityKey
+       
+    lista.append(FrutaUpdate(token='', 
+     entityKey=i.entityKey, 
+     #empresa_key=i.empresa_key.urlsafe(),
+     title=i.title, 
+     decription=i.decription, 
+     urlImage=i.urlImage))
+   lstMessage.data = lista #ASIGNA a la salida la lista
+   message = lstMessage
+  except jwt.DecodeError:
+   message = FrutaList(code=-1, data=[])
+  except jwt.ExpiredSignatureError:
+   message = FrutaList(code=-2, data=[])
+  return message
+
+# insert
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(FrutaInput, CodeMessage, path='fruta/insert', http_method='POST', name='fruta.insert')
+#siempre lleva cls y request
+ def fruta_add(cls, request):
+  try:
+   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de
+   fruta = Fruta()
+   if fruta.fruta_m(request, user.empresa_key)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+    codigo=1
+   else:
+    codigo=-3
+          #la funcion josue_m puede actualizar e insertar
+          #depende de la ENTRADA de este endpoint method
+   message = CodeMessage(code=codigo, message='Fruta added')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+# update
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(FrutaUpdate, CodeMessage, path='fruta/update', http_method='POST', name='fruta.update')
+#siempre lleva cls y request
+ def fruta_update(cls, request):
+  try:
+   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+   empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
+   fruta = Fruta()
+   if fruta.fruta_m(request, empresakey)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+    codigo=1
+   else:
+    codigo=-3
+      #la funcion josue_m puede actualizar e insertar
+      #depende de la ENTRADA de este endpoint method
+   message = CodeMessage(code=1, message='fruta updated')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+###########################
+#### Verdura
+###########################
+
+@endpoints.api(name='verdura_api', version='v1', description='verdura REST API')
+class VerduraApi(remote.Service):
+# get one
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(TokenKey, VerduraList, path='verdura/get', http_method='POST', name='verdura.get')
+#siempre lleva cls y request
+ def verdura_get(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+      #Obtiene el elemento dado el entityKey
+   verduraentity = ndb.Key(urlsafe=request.entityKey)
+      #CREA LA SALIDA de tipo JosueInput y le asigna los valores, es a como se declaro en el messages.py
+      #josuentity.get().empresa_key.urlsafe() para poder optener el EntityKey
+   message = VerduraList(code=1, data=[VerduraUpdate(token='Succesfully get',
+    entityKey=verduraentity.get().entityKey,
+    #empresa_key=teamentity.get().empresa_key.urlsafe(), 
+    title=verduraentity.get().title, 
+    description=verduraentity.get().description, 
+    urlImage=verduraentity.get().urlImage)])
+  except jwt.DecodeError:
+   message = VerduraList(code=-1, data=[])
+  except jwt.ExpiredSignatureError:
+   message = VerduraList(code=-2, data=[])
+  return message
+
+
+# delete
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(TokenKey, CodeMessage, path='verdura/delete', http_method='POST', name='verdura.delete')
+#siempre lleva cls y request
+ def verdura_remove(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+   verduraentity = ndb.Key(urlsafe=request.entityKey)#Obtiene el elemento dado el EntitKey
+   verduraentity.delete()#BORRA
+   message = CodeMessage(code=0, message='verdura deleted')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+# list
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(Token, VerduraList, path='verdura/list', http_method='POST', name='verdura.list')
+#siempre lleva cls y request
+ def verdura_list(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id']) #obtiene usuario dado el token
+   lista = [] #crea lista para guardar contenido de la BD
+   lstMessage = VerduraList(code=1) #CREA el mensaje de salida
+   lstBd = Verdura.query().fetch() #obtiene de la base de datos
+   for i in lstBd: #recorre la base de datos
+    #inserta a la lista creada con los elementos que se necesiten de la base de datos
+    #i.empresa_key.urlsafe() obtiene el entityKey
+       
+    lista.append(VerduraUpdate(token='', 
+     entityKey=i.entityKey, 
+     #empresa_key=i.empresa_key.urlsafe(),
+     title=i.title, 
+     decription=i.decription, 
+     urlImage=i.urlImage))
+   lstMessage.data = lista #ASIGNA a la salida la lista
+   message = lstMessage
+  except jwt.DecodeError:
+   message = VerduraList(code=-1, data=[])
+  except jwt.ExpiredSignatureError:
+   message = VerduraList(code=-2, data=[])
+  return message
+
+# insert
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(VerduraInput, CodeMessage, path='verdura/insert', http_method='POST', name='verdura.insert')
+#siempre lleva cls y request
+ def verdura_add(cls, request):
+  try:
+   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de
+   verdura = Verdura()
+   if verdura.verdura_m(request, user.empresa_key)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+    codigo=1
+   else:
+    codigo=-3
+          #la funcion josue_m puede actualizar e insertar
+          #depende de la ENTRADA de este endpoint method
+   message = CodeMessage(code=codigo, message='Verdura added')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+# update
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(VerduraUpdate, CodeMessage, path='verdura/update', http_method='POST', name='verdura.update')
+#siempre lleva cls y request
+ def verdura_update(cls, request):
+  try:
+   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+   empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
+   verdura = Verdura()
+   if verdura.verdura_m(request, empresakey)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+    codigo=1
+   else:
+    codigo=-3
+      #la funcion josue_m puede actualizar e insertar
+      #depende de la ENTRADA de este endpoint method
+   message = CodeMessage(code=1, message='verdura updated')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+  ###########################
+#### Postre
+###########################
+
+@endpoints.api(name='postre_api', version='v1', description='postre REST API')
+class PostreApi(remote.Service):
+# get one
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(TokenKey, PostreList, path='postre/get', http_method='POST', name='postre.get')
+#siempre lleva cls y request
+ def postre_get(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+      #Obtiene el elemento dado el entityKey
+   postreentity = ndb.Key(urlsafe=request.entityKey)
+      #CREA LA SALIDA de tipo JosueInput y le asigna los valores, es a como se declaro en el messages.py
+      #josuentity.get().empresa_key.urlsafe() para poder optener el EntityKey
+   message = PostreList(code=1, data=[PostreUpdate(token='Succesfully get',
+    entityKey=postreentity.get().entityKey,
+    #empresa_key=teamentity.get().empresa_key.urlsafe(), 
+    title=postreentity.get().title, 
+    description=postreentity.get().description, 
+    urlImage=postreentity.get().urlImage)])
+  except jwt.DecodeError:
+   message = PostreList(code=-1, data=[])
+  except jwt.ExpiredSignatureError:
+   message = PostreList(code=-2, data=[])
+  return message
+
+
+# delete
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(TokenKey, CodeMessage, path='postre/delete', http_method='POST', name='postre.delete')
+#siempre lleva cls y request
+ def postre_remove(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+   postreentity = ndb.Key(urlsafe=request.entityKey)#Obtiene el elemento dado el EntitKey
+   postreentity.delete()#BORRA
+   message = CodeMessage(code=0, message='postre deleted')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+# list
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(Token, PostreList, path='postre/list', http_method='POST', name='postre.list')
+#siempre lleva cls y request
+ def postre_list(cls, request):
+  try:
+   token = jwt.decode(request.tokenint, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id']) #obtiene usuario dado el token
+   lista = [] #crea lista para guardar contenido de la BD
+   lstMessage = PostreList(code=1) #CREA el mensaje de salida
+   lstBd = Postre.query().fetch() #obtiene de la base de datos
+   for i in lstBd: #recorre la base de datos
+    #inserta a la lista creada con los elementos que se necesiten de la base de datos
+    #i.empresa_key.urlsafe() obtiene el entityKey
+       
+    lista.append(PostreUpdate(token='', 
+     entityKey=i.entityKey, 
+     #empresa_key=i.empresa_key.urlsafe(),
+     title=i.title, 
+     decription=i.decription, 
+     urlImage=i.urlImage))
+   lstMessage.data = lista #ASIGNA a la salida la lista
+   message = lstMessage
+  except jwt.DecodeError:
+   message = PostreList(code=-1, data=[])
+  except jwt.ExpiredSignatureError:
+   message = PostreList(code=-2, data=[])
+  return message
+
+# insert
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(PostreInput, CodeMessage, path='postre/insert', http_method='POST', name='postre.insert')
+#siempre lleva cls y request
+ def postre_add(cls, request):
+  try:
+   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id']) #obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de
+   postre = Postre()
+   if postre.postre_m(request, user.empresa_key)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+    codigo=1
+   else:
+    codigo=-3
+          #la funcion josue_m puede actualizar e insertar
+          #depende de la ENTRADA de este endpoint method
+   message = CodeMessage(code=codigo, message='Postre added')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+# update
+#                   ENTRADA    SALIDA        RUTA              siempre es POST     NOMBRE
+ @endpoints.method(PostreUpdate, CodeMessage, path='postre/update', http_method='POST', name='postre.update')
+#siempre lleva cls y request
+ def postre_update(cls, request):
+  try:
+   token = jwt.decode(request.token, 'secret')#CHECA EL TOKEN
+   user = Usuarios.get_by_id(token['user_id'])#obtiene el usuario para poder acceder a los metodos declarados en models.py en la seccion de USUARIOS
+   empresakey = ndb.Key(urlsafe=user.empresa_key.urlsafe())#convierte el string dado a entityKey
+   postre = Postre()
+   if postre.postre_m(request, empresakey)==0:#llama a la funcion declarada en models.py en la seccion de USUARIOS
+    codigo=1
+   else:
+    codigo=-3
+      #la funcion josue_m puede actualizar e insertar
+      #depende de la ENTRADA de este endpoint method
+   message = CodeMessage(code=1, message='postre updated')
+  except jwt.DecodeError:
+   message = CodeMessage(code=-2, message='Invalid token')
+  except jwt.ExpiredSignatureError:
+   message = CodeMessage(code=-1, message='Token expired')
+  return message
+
+application = endpoints.api_server([UsuariosApi, EmpresasApi, AlimentoApi, FrutaApi, VerduraApi, PostreApi, ProductsApi], restricted=False)
 

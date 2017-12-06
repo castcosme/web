@@ -10,10 +10,6 @@ handlers:
   script: web_token_api.application
   secure: always
 
-#- url: /favicon\.ico
-#  static_files: favicon.ico
-#  upload: favicon\.ico
-
 - url: /app
   static_dir: app
 
