@@ -12,6 +12,7 @@ import jinja2
 
 from models import Empresa
 from models import Alimento
+from models import Fruta, Verdura, Postre
 
 jinja_env = jinja2.Environment(
  loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -22,32 +23,6 @@ class DemoClass(object):
 
 def MyClass(obj):
  return obj.__dict__
-
-
-class GetAlimentosHandler(webapp2.RequestHandler):
-
-    def get(self):
-     self.response.headers.add_header('Access-Control-Allow-Origin', '*')
-     self.response.headers['Content-Type'] = 'application/json'
-
-     id_empresa = self.request.get('empresa')
-     objemp = Empresa.query(Empresa.codigo_empresa == id_empresa).get()
-     strKey = objemp.key.urlsafe() 
-     myEmpKey = ndb.Key(urlsafe=strKey) 
-     myAlimentos = Alimento.query(Alimento.empresa_key == myEmpKey)
-
-     myList = []
-     for i in myAlimentos:
-      myObj = DemoClass()
-      myObj.title = i.title
-      myObj.description = i.description
-      myObj.urlImage = i.urlImage
-      myList.append(myObj)
-       
-     json_string = json.dumps(myList, default=MyClass)
-     self.response.write(json_string)
-
-
 
 ###########################################################################     
 
@@ -104,6 +79,29 @@ class LoginHandler(webapp2.RequestHandler):
     template = jinja_env.get_template(template_name)
     return template.render(context)
 
+class GetAlimentosHandler(webapp2.RequestHandler):
+
+    def get(self):
+     self.response.headers.add_header('Access-Control-Allow-Origin', '*')
+     self.response.headers['Content-Type'] = 'application/json'
+
+     id_empresa = self.request.get('empresa')
+     objemp = Empresa.query(Empresa.codigo_empresa == id_empresa).get()
+     strKey = objemp.key.urlsafe() 
+     myEmpKey = ndb.Key(urlsafe=strKey) 
+     myAlimentos = Alimento.query(Alimento.empresa_key == myEmpKey)
+
+     myList = []
+     for i in myAlimentos:
+      myObj = DemoClass()
+      myObj.title = i.title
+      myObj.description = i.description
+      myObj.urlImage = i.urlImage
+      myList.append(myObj)
+       
+     json_string = json.dumps(myList, default=MyClass)
+     self.response.write(json_string)
+
 
 class AlimentoHandler(webapp2.RequestHandler):
 
@@ -120,6 +118,122 @@ class AlimentoHandler(webapp2.RequestHandler):
     template = jinja_env.get_template(template_name)
     return template.render(context)
 
+class GetFrutasHandler(webapp2.RequestHandler):
+
+    def get(self):
+     self.response.headers.add_header('Access-Control-Allow-Origin', '*')
+     self.response.headers['Content-Type'] = 'application/json'
+
+     id_empresa = self.request.get('empresa')
+     objemp = Empresa.query(Empresa.codigo_empresa == id_empresa).get()
+     strKey = objemp.key.urlsafe() 
+     myEmpKey = ndb.Key(urlsafe=strKey) 
+     myFrutas = Fruta.query(Fruta.empresa_key == myEmpKey)
+
+     myList = []
+     for i in myFrutas:
+      myObj = DemoClass()
+      myObj.title = i.title
+      myObj.description = i.description
+      myObj.urlImage = i.urlImage
+      myList.append(myObj)
+       
+     json_string = json.dumps(myList, default=MyClass)
+     self.response.write(json_string)
+
+
+class FrutaHandler(webapp2.RequestHandler):
+
+   def get(self):
+
+    template_context = {}
+    self.response.out.write(
+      self._render_template('fruta.html', template_context))
+
+   def _render_template(self, template_name, context=None):
+    if context is None:
+     context = {}
+
+    template = jinja_env.get_template(template_name)
+    return template.render(context)
+
+    class GetVerdurasHandler(webapp2.RequestHandler):
+
+    def get(self):
+     self.response.headers.add_header('Access-Control-Allow-Origin', '*')
+     self.response.headers['Content-Type'] = 'application/json'
+
+     id_empresa = self.request.get('empresa')
+     objemp = Empresa.query(Empresa.codigo_empresa == id_empresa).get()
+     strKey = objemp.key.urlsafe() 
+     myEmpKey = ndb.Key(urlsafe=strKey) 
+     myVerduras = Verdura.query(Verdura.empresa_key == myEmpKey)
+
+     myList = []
+     for i in myVerduras:
+      myObj = DemoClass()
+      myObj.title = i.title
+      myObj.description = i.description
+      myObj.urlImage = i.urlImage
+      myList.append(myObj)
+       
+     json_string = json.dumps(myList, default=MyClass)
+     self.response.write(json_string)
+
+
+class VerduraHandler(webapp2.RequestHandler):
+
+   def get(self):
+
+    template_context = {}
+    self.response.out.write(
+      self._render_template('verdura.html', template_context))
+
+   def _render_template(self, template_name, context=None):
+    if context is None:
+     context = {}
+
+    template = jinja_env.get_template(template_name)
+    return template.render(context)
+
+    class GetPostresHandler(webapp2.RequestHandler):
+
+    def get(self):
+     self.response.headers.add_header('Access-Control-Allow-Origin', '*')
+     self.response.headers['Content-Type'] = 'application/json'
+
+     id_empresa = self.request.get('empresa')
+     objemp = Empresa.query(Empresa.codigo_empresa == id_empresa).get()
+     strKey = objemp.key.urlsafe() 
+     myEmpKey = ndb.Key(urlsafe=strKey) 
+     myPostres = Postre.query(Postre.empresa_key == myEmpKey)
+
+     myList = []
+     for i in myPostres:
+      myObj = DemoClass()
+      myObj.title = i.title
+      myObj.description = i.description
+      myObj.urlImage = i.urlImage
+      myList.append(myObj)
+       
+     json_string = json.dumps(myList, default=MyClass)
+     self.response.write(json_string)
+
+
+class PostreHandler(webapp2.RequestHandler):
+
+   def get(self):
+
+    template_context = {}
+    self.response.out.write(
+      self._render_template('postre.html', template_context))
+
+   def _render_template(self, template_name, context=None):
+    if context is None:
+     context = {}
+
+    template = jinja_env.get_template(template_name)
+    return template.render(context)
 
 class MainHandler(webapp2.RequestHandler):
 
@@ -138,9 +252,15 @@ class MainHandler(webapp2.RequestHandler):
     return template.render(context)
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
+    ('/', MainHandler),Desarrollo_web_2017
     ('/login', LoginHandler),
-    ('/alimentos', AlimentoHandler),
     ('/up', UpHandler),
+    ('/alimentos', AlimentoHandler),
     ('/getAlimentos', GetAlimentosHandler),
+    ('/frutas', FrutaHandler),
+    ('/getFrutas', GetFrutasHandler),
+    ('/verduras', VerduraHandler),
+    ('/getVerduras', GetVerdurasHandler),
+    ('/postres', PostreHandler),
+    ('/getPostres', GetPostresHandler)
 ], debug = True)

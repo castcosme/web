@@ -1,3 +1,10 @@
+function all(){
+  getData();
+  getDataFrutas();
+  getDataVerduras();
+  getDataPostres();
+}
+
 
 function getData() 
 {

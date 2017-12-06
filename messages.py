@@ -100,6 +100,84 @@ class AlimentoList(messages.Message):
 #es necesario el repeated para que sea lista
     data = messages.MessageField(AlimentoUpdate, 2, repeated=True)
 
+    ######Fruta########
+
+#Mensaje de Entrada y Salida para Frutas
+class FrutaInput(messages.Message):
+    token = messages.StringField(1, required=True) 
+    title = messages.StringField(2)
+    description = messages.StringField(3)
+    urlImage = messages.StringField(5)
+
+    
+class FrutaUpdate(messages.Message):
+    token = messages.StringField(1, required=True)
+    #empresa_key = messages.StringField(2, required=True)
+    entityKey = messages.StringField(2, required=True)
+    title = messages.StringField(3)
+    description = messages.StringField(4)
+    urlImage = messages.StringField(5)
+
+#regresa una lista para la base de datos Empresa
+class FrutaList(messages.Message):
+    code = messages.IntegerField(1)
+#regresa mensaje de lo ocurrido
+#mensaje de tipo MENSAJEFIELD que regresa una lista de tipo TeamUpdate
+#es necesario el repeated para que sea lista
+    data = messages.MessageField(FrutaUpdate, 2, repeated=True)
+
+    ######Verdura########
+
+#Mensaje de Entrada y Salida para Verduras
+class VerduraInput(messages.Message):
+    token = messages.StringField(1, required=True) 
+    title = messages.StringField(2)
+    description = messages.StringField(3)
+    urlImage = messages.StringField(5)
+
+    
+class VerduraUpdate(messages.Message):
+    token = messages.StringField(1, required=True)
+    #empresa_key = messages.StringField(2, required=True)
+    entityKey = messages.StringField(2, required=True)
+    title = messages.StringField(3)
+    description = messages.StringField(4)
+    urlImage = messages.StringField(5)
+
+#regresa una lista para la base de datos Empresa
+class VerduraList(messages.Message):
+    code = messages.IntegerField(1)
+#regresa mensaje de lo ocurrido
+#mensaje de tipo MENSAJEFIELD que regresa una lista de tipo TeamUpdate
+#es necesario el repeated para que sea lista
+    data = messages.MessageField(VerduraUpdate, 2, repeated=True)
+
+    ######Postre########
+
+#Mensaje de Entrada y Salida para Postres
+class PostreInput(messages.Message):
+    token = messages.StringField(1, required=True) 
+    title = messages.StringField(2)
+    description = messages.StringField(3)
+    urlImage = messages.StringField(5)
+
+    
+class PostreUpdate(messages.Message):
+    token = messages.StringField(1, required=True)
+    #empresa_key = messages.StringField(2, required=True)
+    entityKey = messages.StringField(2, required=True)
+    title = messages.StringField(3)
+    description = messages.StringField(4)
+    urlImage = messages.StringField(5)
+
+#regresa una lista para la base de datos Empresa
+class PostreList(messages.Message):
+    code = messages.IntegerField(1)
+#regresa mensaje de lo ocurrido
+#mensaje de tipo MENSAJEFIELD que regresa una lista de tipo TeamUpdate
+#es necesario el repeated para que sea lista
+    data = messages.MessageField(PostreUpdate, 2, repeated=True)
+
 ########Product########
 
 #Mensaje de Entrada y Salida para Alimentos
