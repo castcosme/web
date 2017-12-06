@@ -157,9 +157,9 @@ class FrutaHandler(webapp2.RequestHandler):
     template = jinja_env.get_template(template_name)
     return template.render(context)
 
-    class GetVerdurasHandler(webapp2.RequestHandler):
+class GetVerdurasHandler(webapp2.RequestHandler):
 
-    def get(self):
+   def get(self):
      self.response.headers.add_header('Access-Control-Allow-Origin', '*')
      self.response.headers['Content-Type'] = 'application/json'
 
@@ -196,7 +196,7 @@ class VerduraHandler(webapp2.RequestHandler):
     template = jinja_env.get_template(template_name)
     return template.render(context)
 
-    class GetPostresHandler(webapp2.RequestHandler):
+class GetPostresHandler(webapp2.RequestHandler):
 
     def get(self):
      self.response.headers.add_header('Access-Control-Allow-Origin', '*')
@@ -251,8 +251,23 @@ class MainHandler(webapp2.RequestHandler):
     template = jinja_env.get_template(template_name)
     return template.render(context)
 
+class MenuHandler(webapp2.RequestHandler):
+
+   def get(self):
+
+    template_context = {}
+    self.response.out.write(
+      self._render_template('menu.html', template_context))
+
+   def _render_template(self, template_name, context=None):
+    if context is None:
+     context = {}
+
+    template = jinja_env.get_template(template_name)
+    return template.render(context)    
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),Desarrollo_web_2017
+    ('/', MainHandler),
     ('/login', LoginHandler),
     ('/up', UpHandler),
     ('/alimentos', AlimentoHandler),
@@ -262,5 +277,6 @@ app = webapp2.WSGIApplication([
     ('/verduras', VerduraHandler),
     ('/getVerduras', GetVerdurasHandler),
     ('/postres', PostreHandler),
-    ('/getPostres', GetPostresHandler)
+    ('/getPostres', GetPostresHandler),
+    ('/menu', MenuHandler)
 ], debug = True)

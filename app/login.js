@@ -25,8 +25,8 @@ function loginDemo()
               // do something
               sessionStorage.token = response.token;
               alert ("token generado: " + sessionStorage.token);
-              //Agregar un menu
-              window.location = "/alimentos";
+              //Agregar 
+              window.location = "/menu";
 
          },
      
