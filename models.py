@@ -194,20 +194,21 @@ def validarEmail(email):
 
 #### create root Empresa
 
-if validarEmail("fcastillo@castcosme.com") == False:
-    empresaAdmin = Empresa(
-      codigo_empresa = 'castcosme',
-      nombre_empresa="Nueva empresa",
-    )
-    empresaAdmin.put()
 
-#### create root user  
+# if validarEmail("fcastillo@castcosme.com") == False:
+#     empresaAdmin = Empresa(
+#       codigo_empresa = 'castcosme',
+#       nombre_empresa="Nueva empresa",
+#     )
+#     empresaAdmin.put()
 
-    keyadmincol = ndb.Key(urlsafe=empresaAdmin.entityKey)
-    admin = Usuarios(
-          empresa_key = keyadmincol,
-          email="fcastillo@castcosme.com",
-          password="hola",
-    )
-    admin.hash_password()
-    admin.put()
+# #### create root user  
+
+#     keyadmincol = ndb.Key(urlsafe=empresaAdmin.entityKey)
+#     admin = Usuarios(
+#           empresa_key = keyadmincol,
+#           email="fcastillo@castcosme.com",
+#           password="hola",
+#     )
+#     admin.hash_password()
+#     admin.put()

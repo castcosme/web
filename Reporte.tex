@@ -1,0 +1,59 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+
+\title{Desarrollo de aplicaciones web:\\\texttt{Proyecto Final} Reporte Técnico}
+\author{Fernando Castillo Cosme}
+
+\begin{document}
+\pagenumbering{gobble}
+\maketitle
+\pagenumbering{arabic}
+
+\tableofcontents
+\newpage
+
+\section{Introducción}
+En la materia "Desarrollo de aplicaciones web" impartida por el profesor Adolfo Centeno en el Tecnológico de Monterrey Campus Puebla se nos asignó como proyecto el realizar una plataforma web con temática libre que implementara el material aprendido en clase.\linebreak
+
+Para éste proyecto se decidió tomar un camino saludable y realizar una plataforma en la que se pudiera calcular una dieta basada en el número de calorías que desearas consumir al día; el usuario tendría que ingresar a su cuenta e ingresar el número de calorías que deseé consumir dependiendo de sus metas.\linebreak
+
+Un administrador sería el encargado de introducir toda la comida (estofados, pastas, cortes, sopas, etc), frutas, verduras y postres a la base de datos; cabe recalcar que se introducirán solamente alimentos saludables en todas las categorías. Los parámetros de la comida serán los siguientes:
+\newline
+-Nombre
+\newline
+-Número de calorías
+\newline
+-Imagen a ser usada como referencia
+\newline
+
+\section{Web Services}
+Para nuestros Web Services se usó una herramienta gratuita de Google proporcionada y sugerida por el profesor: GCloud.
+GCloud es un servicio proporcionado por Google que nos ayuda en el control de elementos en la nube apoyandonos con una base de datos.
+GCloud nos ayuda bastante para el desarrollo de nuestras aplicaciones también, ya que proporciona servicios como la gestión de mapas en GMaps. Pero la herramienta más importante es la proporción de una base de datos en la nube, la cual nos ayuda a subir y gestionar elementos necesarios para nuestra apicación, imágenes, texto, vídeo e información en general.
+\newline
+
+\section{Lenguaje Usado}
+Para el desarrollo de nuestra aplicación se utilizaron distintos lenguajes de programación.\linebreak
+\newline
+El backend del proyecto fue desarrollado con Python; se utilizó la versión 2.7 del mismo\linebreak
+\newline
+El frontend del proyecto fue desarrollado con HTML, CSS y Javascript\linebreak
+\newline
+
+\section{Base de Datos}
+La base de datos utilizada en el proyecto fue Ndb, proporcionada de manera gratuita por Google Cloud; una base de datos en la nube muy fácil de utilizar.\linebreak
+Para el proyecto se definió un archivo llamado "models.py", en dicho archivo se definirán las entidades utilizadas en la base de datos a ser utilizadas en la página web.\linebreak
+En las clases "public-rest-api.py" y "web-token-api.py" se habilitaron las APIs de las entidades\linebreak
+\newline
+
+\section{Tecnologías Cliente}
+En nuestras tecnologías cliente utilizadas tenemos a HTML, CSS y JavaScript; nos apoyamos también de un framework llamado Bootstrap, utilizamos también un template del mismo para incrementar la estética para el cliente.\linebreak
+Cada entidad del proyecto cuenta con su archivo JavaScript en la carpeta app, dichos archivos asisten en la conexión con la aplicación.\linebreak
+
+
+
+\end{document}
