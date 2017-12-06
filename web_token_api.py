@@ -11,6 +11,9 @@ from CustomExceptions import NotFoundException
 from messages import EmailPasswordMessage, TokenMessage, CodeMessage, Token, TokenKey, MessageNone
 from messages import EmpresaInput, EmpresaUpdate, EmpresaList
 from messages import AlimentoInput, AlimentoUpdate, AlimentoList
+from messages import FrutaInput, FrutaUpdate, FrutaList
+from messages import VerduraInput, VerduraUpdate, VerduraList
+from messages import PostreInput, PostreUpdate, PostreList
 from messages import UserInput, UserUpdate, UserList
 from messages import ProductInput, ProductUpdate, ProductList
 
@@ -18,7 +21,7 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 
 import models
 from models import validarEmail
-from models import Empresa, Usuarios, Alimento, Product
+from models import Empresa, Usuarios, Alimento, Product, Fruta, Verdura, Postre
 
 ###############
 # Products

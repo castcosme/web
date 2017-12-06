@@ -132,6 +132,57 @@ class Alimento(CustomBaseModel):
         alimento.put()#inserta o hace un update depende del main.py
         return 0
 
+        ######### Fruta  #########
+
+class Fruta(CustomBaseModel):
+    _message_fields_schema = ('entityKey', 'title', 'description', 'urlImage')
+    empresa_key = ndb.KeyProperty(kind=Empresa)
+    title = ndb.StringProperty()
+    description = ndb.StringProperty()
+    urlImage = ndb.StringProperty()
+ 
+    ### Tweet ####
+    def fruta_m(self, data, empresakey):
+        fruta  = Fruta()#Crea una variable de tipo Tweet
+        fruta.populate(data)#Llena la variables con los datos dados por el request en main.py
+        fruta.empresa_key=empresakey#inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        fruta.put()#inserta o hace un update depende del main.py
+        return 0
+
+        ######### Verdura  #########
+
+class Verdura(CustomBaseModel):
+    _message_fields_schema = ('entityKey', 'title', 'description', 'urlImage')
+    empresa_key = ndb.KeyProperty(kind=Empresa)
+    title = ndb.StringProperty()
+    description = ndb.StringProperty()
+    urlImage = ndb.StringProperty()
+ 
+    ### Tweet ####
+    def verdura_m(self, data, empresakey):
+        verdura  = Verdura()#Crea una variable de tipo Tweet
+        verdura.populate(data)#Llena la variables con los datos dados por el request en main.py
+        verdura.empresa_key=empresakey#inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        verdura.put()#inserta o hace un update depende del main.py
+        return 0
+
+        ######### Postre  #########
+
+class Postre(CustomBaseModel):
+    _message_fields_schema = ('entityKey', 'title', 'description', 'urlImage')
+    empresa_key = ndb.KeyProperty(kind=Empresa)
+    title = ndb.StringProperty()
+    description = ndb.StringProperty()
+    urlImage = ndb.StringProperty()
+ 
+    ### Tweet ####
+    def postre_m(self, data, empresakey):
+        postre  = Postre()#Crea una variable de tipo Tweet
+        postre.populate(data)#Llena la variables con los datos dados por el request en main.py
+        postre.empresa_key=empresakey#inserta el entityKey de la empresa que es un parametro que se manda en main.py
+        postre.put()#inserta o hace un update depende del main.py
+        return 0
+
 #### create demo
 
 def validarEmail(email):
